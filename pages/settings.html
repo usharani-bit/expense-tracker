@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings — SpendSense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' }, accent: { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' }, success: '#10b981', danger: '#ef4444', muted: '#9ca3af', surface: '#111827' }, fontFamily: { heading: ['"Space Grotesk"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+
+<body class="bg-primary text-gray-100 font-body antialiased">
+    <div class="dashboard-layout">
+        <aside id="sidebar" class="sidebar">
+            <div class="p-5 border-b border-primary-border"><a href="../index.html" class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+                        <i data-lucide="wallet" class="w-4 h-4 text-primary"></i></div><span
+                        class="text-lg font-heading font-bold">Spend<span class="text-accent-cyan">Sense</span></span>
+                </a></div>
+            <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+                <p class="px-5 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Main</p>
+                <a href="dashboard.html" class="sidebar-link"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    Dashboard</a>
+                <a href="expenses.html" class="sidebar-link"><i data-lucide="receipt" class="w-5 h-5"></i> Expenses</a>
+                <a href="budgets.html" class="sidebar-link"><i data-lucide="target" class="w-5 h-5"></i> Budgets</a>
+                <a href="analytics.html" class="sidebar-link"><i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    Analytics</a>
+                <p class="px-5 pt-6 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
+                <a href="settings.html" class="sidebar-link active"><i data-lucide="settings" class="w-5 h-5"></i>
+                    Settings</a>
+            </nav>
+            <div class="p-4 border-t border-primary-border"><button onclick="Auth.logout()"
+                    class="sidebar-link w-full text-danger"><i data-lucide="log-out" class="w-5 h-5"></i> Log
+                    Out</button></div>
+        </aside>
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <div class="main-content">
+            <header class="topbar">
+                <div class="flex items-center gap-4">
+                    <button id="sidebar-toggle" class="lg:hidden p-2 text-gray-400 hover:text-white"><i
+                            data-lucide="menu" class="w-5 h-5"></i></button>
+                    <div>
+                        <h1 class="text-lg font-heading font-semibold">Settings</h1>
+                        <p class="text-xs text-muted">Manage your account</p>
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-4 sm:p-6 lg:p-8 page-content pb-24 lg:pb-8 max-w-3xl">
+
+                <!-- Profile Section -->
+                <div class="card mb-6">
+                    <h2 class="font-heading text-base font-semibold mb-6 flex items-center gap-2"><i data-lucide="user"
+                            class="w-5 h-5 text-accent-cyan"></i> Profile</h2>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center text-2xl font-bold text-primary"
+                            id="settings-avatar">U</div>
+                        <div>
+                            <p class="font-medium" id="settings-name">Loading...</p>
+                            <p class="text-sm text-muted" id="settings-email">—</p>
+                        </div>
+                    </div>
+                    <form id="profile-form" class="space-y-4">
+                        <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Full Name</label><input
+                                type="text" id="pf-name" class="input-field" placeholder="Your name" /></div>
+                        <button type="submit" id="save-profile-btn" class="btn-primary py-2 px-6 text-sm">Save
+                            Name</button>
+                    </form>
+                </div>
+
+                <!-- Security -->
+                <div class="card mb-6">
+                    <h2 class="font-heading text-base font-semibold mb-6 flex items-center gap-2"><i
+                            data-lucide="shield" class="w-5 h-5 text-success"></i> Change Password</h2>
+                    <form id="password-form" class="space-y-4">
+                        <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Current
+                                Password</label><input type="password" id="pw-old" required class="input-field"
+                                placeholder="••••••••" /></div>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium mb-1.5 text-gray-300">New
+                                    Password</label><input type="password" id="pw-new" required minlength="8"
+                                    class="input-field" placeholder="Min 8 characters" /></div>
+                            <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Confirm New</label><input
+                                    type="password" id="pw-confirm" required class="input-field"
+                                    placeholder="Re-enter" /></div>
+                        </div>
+                        <button type="submit" id="save-pw-btn" class="btn-secondary py-2 px-6 text-sm">Change
+                            Password</button>
+                    </form>
+                </div>
+
+                <!-- Data Export -->
+                <div class="card mb-6">
+                    <h2 class="font-heading text-base font-semibold mb-6 flex items-center gap-2"><i
+                            data-lucide="database" class="w-5 h-5 text-accent-gold"></i> Export Data</h2>
+                    <div class="space-y-3">
+                        <button onclick="exportCSV()"
+                            class="w-full flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition text-left group">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="file-spreadsheet" class="w-5 h-5 text-success"></i>
+                                <div>
+                                    <p class="text-sm font-medium">Export as CSV</p>
+                                    <p class="text-xs text-muted">Download all expenses in spreadsheet format</p>
+                                </div>
+                            </div>
+                            <i data-lucide="download" class="w-5 h-5 text-muted group-hover:text-white transition"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="card border-danger/20">
+                    <h2 class="font-heading text-base font-semibold mb-4 flex items-center gap-2 text-danger"><i
+                            data-lucide="alert-triangle" class="w-5 h-5"></i> Danger Zone</h2>
+                    <p class="text-sm text-muted mb-4">Log out from this device or all devices.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="Auth.logout()"
+                            class="btn-secondary text-sm py-2 px-4 border-danger/30 text-danger hover:bg-danger/10">Log
+                            Out</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-link"><i data-lucide="layout-dashboard"
+                    class="w-5 h-5"></i><span>Home</span></a>
+            <a href="expenses.html" class="bottom-nav-link"><i data-lucide="receipt"
+                    class="w-5 h-5"></i><span>Expenses</span></a>
+            <button class="bottom-nav-link">
+                <div
+                    class="w-12 h-12 -mt-6 rounded-full bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/30">
+                    <i data-lucide="plus" class="w-6 h-6 text-primary"></i></div>
+            </button>
+            <a href="analytics.html" class="bottom-nav-link"><i data-lucide="bar-chart-3"
+                    class="w-5 h-5"></i><span>Analytics</span></a>
+            <a href="settings.html" class="bottom-nav-link active"><i data-lucide="settings"
+                    class="w-5 h-5"></i><span>Settings</span></a>
+        </nav>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/appwrite.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+            // Load user data
+            (async () => {
+                const user = await Auth.requireAuth();
+                if (!user) return;
+                document.getElementById('settings-avatar').textContent = user.name?.charAt(0).toUpperCase() || 'U';
+                document.getElementById('settings-name').textContent = user.name || 'User';
+                document.getElementById('settings-email').textContent = user.email || '—';
+                document.getElementById('pf-name').value = user.name || '';
+            })();
+
+        // Update name
+        document.getElementById('profile-form')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-profile-btn');
+            btn.disabled = true; btn.textContent = 'Saving...';
+            try {
+                const name = document.getElementById('pf-name').value.trim();
+                if (!name) throw new Error('Name is required');
+                await Auth.updateName(name);
+                document.getElementById('settings-name').textContent = name;
+                document.getElementById('settings-avatar').textContent = name.charAt(0).toUpperCase();
+                Toast.success('Name updated!');
+            } catch (err) { Toast.error(err.message); }
+            btn.disabled = false; btn.textContent = 'Save Name';
+        });
+
+        // Change password
+        document.getElementById('password-form')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-pw-btn');
+            const newPw = document.getElementById('pw-new').value;
+            const confirm = document.getElementById('pw-confirm').value;
+            const oldPw = document.getElementById('pw-old').value;
+
+            if (newPw !== confirm) { Toast.error('Passwords do not match'); return; }
+            if (newPw.length < 8) { Toast.error('Password must be at least 8 characters'); return; }
+
+            btn.disabled = true; btn.textContent = 'Updating...';
+            try {
+                await Auth.updatePassword(newPw, oldPw);
+                Toast.success('Password updated!');
+                this.reset();
+            } catch (err) { Toast.error(err.message || 'Failed to update password'); }
+            btn.disabled = false; btn.textContent = 'Change Password';
+        });
+
+        // Export CSV
+        async function exportCSV() {
+            try {
+                const result = await ExpenseService.list();
+                const docs = result.documents;
+                if (!docs.length) { Toast.info('No expenses to export'); return; }
+
+                const headers = ['Date', 'Description', 'Category', 'Type', 'Amount', 'Notes'];
+                const rows = docs.map(d => [
+                    d.date,
+                    `"${d.description.replace(/"/g, '""')}"`,
+                    d.category,
+                    d.type,
+                    (d.amount / 100).toFixed(2),
+                    `"${(d.notes || '').replace(/"/g, '""')}"`
+                ]);
+
+                const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `spendsense_expenses_${Utils.getCurrentMonth()}.csv`;
+                a.click(); URL.revokeObjectURL(url);
+                Toast.success('CSV downloaded!');
+            } catch (err) { Toast.error('Export failed'); }
+        }
+
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            gsap.from('.card', { opacity: 0, y: 30, stagger: 0.1, duration: 0.6, ease: 'power2.out', delay: 0.2 });
+        }
+    </script>
+</body>
+
+</html>

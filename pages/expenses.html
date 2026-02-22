@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expenses — SpendSense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' }, accent: { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' }, success: '#10b981', danger: '#ef4444', muted: '#9ca3af', surface: '#111827' }, fontFamily: { heading: ['"Space Grotesk"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+
+<body class="bg-primary text-gray-100 font-body antialiased">
+    <div class="dashboard-layout">
+        <aside id="sidebar" class="sidebar">
+            <div class="p-5 border-b border-primary-border"><a href="../index.html" class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+                        <i data-lucide="wallet" class="w-4 h-4 text-primary"></i>
+                    </div><span class="text-lg font-heading font-bold">Spend<span
+                            class="text-accent-cyan">Sense</span></span>
+                </a></div>
+            <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+                <p class="px-5 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Main</p>
+                <a href="dashboard.html" class="sidebar-link"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    Dashboard</a>
+                <a href="expenses.html" class="sidebar-link active"><i data-lucide="receipt" class="w-5 h-5"></i>
+                    Expenses</a>
+                <a href="budgets.html" class="sidebar-link"><i data-lucide="target" class="w-5 h-5"></i> Budgets</a>
+                <a href="analytics.html" class="sidebar-link"><i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    Analytics</a>
+                <p class="px-5 pt-6 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
+                <a href="settings.html" class="sidebar-link"><i data-lucide="settings" class="w-5 h-5"></i> Settings</a>
+            </nav>
+            <div class="p-4 border-t border-primary-border"><button onclick="Auth.logout()"
+                    class="sidebar-link w-full text-danger"><i data-lucide="log-out" class="w-5 h-5"></i> Log
+                    Out</button></div>
+        </aside>
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <div class="main-content">
+            <header class="topbar">
+                <div class="flex items-center gap-4">
+                    <button id="sidebar-toggle" class="lg:hidden p-2 text-gray-400 hover:text-white"><i
+                            data-lucide="menu" class="w-5 h-5"></i></button>
+                    <div>
+                        <h1 class="text-lg font-heading font-semibold">Expenses</h1>
+                        <p class="text-xs text-muted">Manage all your transactions</p>
+                    </div>
+                </div>
+                <button onclick="openAddExpenseModal()" class="btn-primary py-2 px-4 text-sm"><i data-lucide="plus"
+                        class="w-4 h-4 mr-1.5"></i> Add Expense</button>
+            </header>
+
+            <main class="p-4 sm:p-6 lg:p-8 page-content pb-24 lg:pb-8">
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <div class="relative flex-1 min-w-[200px]">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="text" id="search-input" class="input-field pl-10"
+                            placeholder="Search expenses..." />
+                    </div>
+                    <select id="filter-category" class="input-field w-auto min-w-[140px]">
+                        <option value="">All Categories</option>
+                        <option value="food">Food</option>
+                        <option value="transport">Transport</option>
+                        <option value="housing">Housing</option>
+                        <option value="health">Health</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Summary -->
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="kpi-card text-center">
+                        <p class="text-xs text-muted mb-1">Total Expenses</p>
+                        <p class="text-xl font-heading font-bold text-danger" id="exp-total">₹0</p>
+                    </div>
+                    <div class="kpi-card text-center">
+                        <p class="text-xs text-muted mb-1">Transactions</p>
+                        <p class="text-xl font-heading font-bold" id="exp-count">0</p>
+                    </div>
+                    <div class="kpi-card text-center">
+                        <p class="text-xs text-muted mb-1">Avg per Transaction</p>
+                        <p class="text-xl font-heading font-bold" id="exp-avg">₹0</p>
+                    </div>
+                </div>
+
+                <!-- Expense Table -->
+                <div class="card overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenses-tbody">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-8">Loading expenses...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-link"><i data-lucide="layout-dashboard"
+                    class="w-5 h-5"></i><span>Home</span></a>
+            <a href="expenses.html" class="bottom-nav-link active"><i data-lucide="receipt"
+                    class="w-5 h-5"></i><span>Expenses</span></a>
+            <button onclick="openAddExpenseModal()" class="bottom-nav-link">
+                <div
+                    class="w-12 h-12 -mt-6 rounded-full bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/30">
+                    <i data-lucide="plus" class="w-6 h-6 text-primary"></i>
+                </div>
+            </button>
+            <a href="analytics.html" class="bottom-nav-link"><i data-lucide="bar-chart-3"
+                    class="w-5 h-5"></i><span>Analytics</span></a>
+            <a href="settings.html" class="bottom-nav-link"><i data-lucide="settings"
+                    class="w-5 h-5"></i><span>Settings</span></a>
+        </nav>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div id="add-expense-modal" class="modal-overlay">
+        <div class="bg-surface rounded-2xl border border-primary-border w-full max-w-lg mx-4 p-6 shadow-2xl"
+            id="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="font-heading text-lg font-semibold">Add Expense</h2><button onclick="closeAddExpenseModal()"
+                    class="p-2 text-gray-400 hover:text-white transition"><i data-lucide="x"
+                        class="w-5 h-5"></i></button>
+            </div>
+            <form id="expense-form" class="space-y-4">
+                <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Description</label><input type="text"
+                        id="exp-desc" required class="input-field" placeholder="What did you spend on?" /></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Amount</label>
+                        <div class="relative"><span
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">₹</span><input type="number"
+                                id="exp-amount" required step="0.01" min="0.01" class="input-field pl-7 font-mono"
+                                placeholder="0.00" /></div>
+                    </div>
+                    <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Date</label><input type="date"
+                            id="exp-date" required class="input-field" /></div>
+                </div>
+                <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Category</label><select
+                        id="exp-category" required class="input-field">
+                        <option value="">Select</option>
+                        <option value="food">🍕 Food</option>
+                        <option value="transport">🚗 Transport</option>
+                        <option value="housing">🏠 Housing</option>
+                        <option value="health">💊 Health</option>
+                        <option value="entertainment">🎬 Entertainment</option>
+                        <option value="shopping">🛍️ Shopping</option>
+                        <option value="utilities">⚡ Utilities</option>
+                        <option value="education">📚 Education</option>
+                        <option value="other">📌 Other</option>
+                    </select></div>
+                <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Type</label><select id="exp-type"
+                        class="input-field">
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select></div>
+                <div class="flex gap-3 pt-2"><button type="button" onclick="closeAddExpenseModal()"
+                        class="btn-secondary flex-1">Cancel</button><button type="submit" id="save-btn"
+                        class="btn-primary flex-1">Save</button></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/appwrite.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+        let allExpenses = [];
+        document.getElementById('exp-date').valueAsDate = new Date();
+
+        async function loadExpenses() {
+            const user = await Auth.requireAuth();
+            if (!user) return;
+            try {
+                const result = await ExpenseService.list();
+                allExpenses = result.documents;
+                renderExpenses(allExpenses);
+            } catch (err) {
+                Toast.error('Failed to load expenses');
+            }
+        }
+
+        function renderExpenses(docs) {
+            const tbody = document.getElementById('expenses-tbody');
+            let totalAmt = 0;
+            const expenses = docs.filter(d => d.type !== 'income');
+            expenses.forEach(d => totalAmt += d.amount);
+
+            document.getElementById('exp-total').textContent = Utils.formatCurrency(totalAmt);
+            document.getElementById('exp-count').textContent = expenses.length;
+            document.getElementById('exp-avg').textContent = expenses.length ? Utils.formatCurrency(Math.round(totalAmt / expenses.length)) : '₹0';
+
+            if (!docs.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-8">No expenses yet. Add your first!</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = docs.map(d => {
+                const isIncome = d.type === 'income';
+                return `<tr class="transaction-row">
+        <td class="font-medium">${d.description}</td>
+        <td><span class="category-tag ${d.category}">${Utils.getCategoryLabel(d.category)}</span></td>
+        <td class="text-muted text-sm">${Utils.formatDate(d.date)}</td>
+        <td class="text-right font-mono ${isIncome ? 'text-success' : 'text-danger'} font-medium">${isIncome ? '+' : '-'}${Utils.formatCurrency(d.amount)}</td>
+        <td class="text-right">
+          <button onclick="deleteExpense('${d.$id}')" class="p-1.5 text-muted hover:text-danger transition" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </td>
+      </tr>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        async function deleteExpense(id) {
+            if (!confirm('Delete this expense?')) return;
+            try {
+                await ExpenseService.delete(id);
+                Toast.success('Expense deleted');
+                allExpenses = allExpenses.filter(d => d.$id !== id);
+                renderExpenses(allExpenses);
+            } catch (err) { Toast.error('Failed to delete'); }
+        }
+
+        // Search & filter
+        document.getElementById('search-input').addEventListener('input', Utils.debounce(function () {
+            const q = this.value.toLowerCase();
+            const cat = document.getElementById('filter-category').value;
+            let filtered = allExpenses;
+            if (q) filtered = filtered.filter(d => d.description.toLowerCase().includes(q));
+            if (cat) filtered = filtered.filter(d => d.category === cat);
+            renderExpenses(filtered);
+        }));
+        document.getElementById('filter-category').addEventListener('change', function () {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            let filtered = allExpenses;
+            if (q) filtered = filtered.filter(d => d.description.toLowerCase().includes(q));
+            if (this.value) filtered = filtered.filter(d => d.category === this.value);
+            renderExpenses(filtered);
+        });
+
+        // Modal
+        function openAddExpenseModal() { document.getElementById('add-expense-modal').classList.add('active'); gsap.fromTo(document.getElementById('modal-content'), { scale: .95, opacity: 0 }, { scale: 1, opacity: 1, duration: .3, ease: 'power2.out' }); }
+        function closeAddExpenseModal() { gsap.to(document.getElementById('modal-content'), { scale: .95, opacity: 0, duration: .2, ease: 'power2.in', onComplete: () => document.getElementById('add-expense-modal').classList.remove('active') }); }
+        document.getElementById('add-expense-modal').addEventListener('click', function (e) { if (e.target === this) closeAddExpenseModal(); });
+
+        document.getElementById('expense-form')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.disabled = true; btn.textContent = 'Saving...';
+            try {
+                await ExpenseService.create({
+                    description: document.getElementById('exp-desc').value.trim(),
+                    amount: parseFloat(document.getElementById('exp-amount').value),
+                    category: document.getElementById('exp-category').value,
+                    date: document.getElementById('exp-date').value,
+                    type: document.getElementById('exp-type').value,
+                });
+                Toast.success('Expense saved!');
+                closeAddExpenseModal(); this.reset(); document.getElementById('exp-date').valueAsDate = new Date();
+                await loadExpenses();
+            } catch (err) { Toast.error(err.message); }
+            btn.disabled = false; btn.textContent = 'Save';
+        });
+
+        loadExpenses();
+    </script>
+</body>
+
+</html>

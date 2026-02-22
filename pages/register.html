@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account — SpendSense</title>
+    <meta name="description" content="Sign up for SpendSense to start tracking your expenses for free." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' }, accent: { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' }, success: '#10b981', danger: '#ef4444', muted: '#9ca3af', surface: '#111827' },
+                    fontFamily: { heading: ['"Space Grotesk"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+    <link rel="stylesheet" href="../css/global.css" />
+</head>
+
+<body
+    class="bg-primary text-gray-100 font-body antialiased min-h-screen flex items-center justify-center relative overflow-hidden">
+
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 right-1/3 w-80 h-80 bg-accent-purple/8 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-72 h-72 bg-accent-cyan/8 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="auth-card relative z-10 w-full max-w-md mx-4">
+        <div
+            class="bg-surface/80 backdrop-blur-xl rounded-2xl border border-primary-border p-8 shadow-2xl shadow-black/30">
+            <a href="../index.html" class="flex items-center justify-center gap-2 mb-8">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/20">
+                    <i data-lucide="wallet" class="w-5 h-5 text-primary"></i>
+                </div>
+                <span class="text-2xl font-heading font-bold">Spend<span class="text-accent-cyan">Sense</span></span>
+            </a>
+
+            <h1 class="text-xl font-heading font-semibold text-center mb-1">Create Your Account</h1>
+            <p class="text-sm text-muted text-center mb-8">Start tracking your finances in under 2 minutes</p>
+
+            <div id="error-msg"
+                class="hidden mb-4 p-3 rounded-xl bg-danger/10 border border-danger/20 text-sm text-danger"></div>
+
+            <form id="register-form" class="space-y-5">
+                <div class="auth-field">
+                    <label for="name" class="block text-sm font-medium mb-1.5 text-gray-300">Full Name</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="text" id="name" name="name" required autocomplete="name" class="input-field pl-10"
+                            placeholder="John Doe" />
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="email" class="block text-sm font-medium mb-1.5 text-gray-300">Email</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="email" id="email" name="email" required autocomplete="email"
+                            class="input-field pl-10" placeholder="you@example.com" />
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="password" class="block text-sm font-medium mb-1.5 text-gray-300">Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="password" id="password" name="password" required minlength="8"
+                            autocomplete="new-password" class="input-field pl-10 pr-10"
+                            placeholder="Min 8 characters" />
+                        <button type="button" id="toggle-password"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-white transition"
+                            aria-label="Toggle password visibility">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex gap-1">
+                            <div id="str-1" class="h-1 flex-1 rounded-full bg-primary-border transition-colors"></div>
+                            <div id="str-2" class="h-1 flex-1 rounded-full bg-primary-border transition-colors"></div>
+                            <div id="str-3" class="h-1 flex-1 rounded-full bg-primary-border transition-colors"></div>
+                            <div id="str-4" class="h-1 flex-1 rounded-full bg-primary-border transition-colors"></div>
+                        </div>
+                        <p id="str-text" class="text-xs text-muted mt-1"></p>
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="confirm" class="block text-sm font-medium mb-1.5 text-gray-300">Confirm Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="password" id="confirm" name="confirm" required autocomplete="new-password"
+                            class="input-field pl-10" placeholder="Re-enter password" />
+                    </div>
+                </div>
+
+                <button type="submit" id="register-btn" class="btn-primary w-full py-3 text-base">
+                    <span id="register-text">Create Account</span>
+                    <svg id="register-spinner" class="hidden animate-spin ml-2 w-5 h-5" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+                            fill="none"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+                        </path>
+                    </svg>
+                </button>
+            </form>
+
+            <p class="text-sm text-center text-muted mt-6">
+                Already have an account? <a href="login.html" class="text-accent-cyan font-medium hover:underline">Log
+                    in</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/appwrite.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+            // If already logged in, redirect
+            (async () => {
+                if (await Auth.isLoggedIn()) window.location.href = 'dashboard.html';
+            })();
+
+        // Password toggle
+        document.getElementById('toggle-password')?.addEventListener('click', function () {
+            const pwd = document.getElementById('password');
+            const isHidden = pwd.type === 'password';
+            pwd.type = isHidden ? 'text' : 'password';
+            this.querySelector('i').setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+            lucide.createIcons();
+        });
+
+        // Password strength
+        document.getElementById('password')?.addEventListener('input', function () {
+            const val = this.value;
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (/[a-z]/.test(val) && /[A-Z]/.test(val)) score++;
+            if (/\d/.test(val)) score++;
+            if (/[^a-zA-Z0-9]/.test(val)) score++;
+            const colors = ['', 'bg-danger', 'bg-accent-gold', 'bg-accent-cyan', 'bg-success'];
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`str-${i}`).className = `h-1 flex-1 rounded-full transition-colors ${i <= score ? colors[score] : 'bg-primary-border'}`;
+            }
+            document.getElementById('str-text').textContent = labels[score] || '';
+        });
+
+        // Register form
+        document.getElementById('register-form')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const errorMsg = document.getElementById('error-msg');
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const pwd = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm').value;
+            const btn = document.getElementById('register-btn');
+            const text = document.getElementById('register-text');
+            const spinner = document.getElementById('register-spinner');
+
+            errorMsg.classList.add('hidden');
+
+            if (pwd !== confirm) { errorMsg.textContent = 'Passwords do not match'; errorMsg.classList.remove('hidden'); return; }
+            if (pwd.length < 8) { errorMsg.textContent = 'Password must be at least 8 characters'; errorMsg.classList.remove('hidden'); return; }
+
+            btn.disabled = true;
+            text.textContent = 'Creating account...';
+            spinner.classList.remove('hidden');
+
+            try {
+                await Auth.register(email, pwd, name);
+                Toast.success('Account created! Welcome to SpendSense.');
+                setTimeout(() => window.location.href = 'dashboard.html', 500);
+            } catch (err) {
+                errorMsg.textContent = err.message || 'Registration failed. Please try again.';
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                text.textContent = 'Create Account';
+                spinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

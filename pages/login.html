@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In — SpendSense</title>
+    <meta name="description" content="Log in to your SpendSense account to track and manage your expenses." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' }, accent: { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' }, success: '#10b981', danger: '#ef4444', muted: '#9ca3af', surface: '#111827' },
+                    fontFamily: { heading: ['"Space Grotesk"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+    <link rel="stylesheet" href="../css/global.css" />
+</head>
+
+<body
+    class="bg-primary text-gray-100 font-body antialiased min-h-screen flex items-center justify-center relative overflow-hidden">
+
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/3 left-1/4 w-80 h-80 bg-accent-cyan/8 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/3 right-1/4 w-72 h-72 bg-accent-purple/8 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="auth-card relative z-10 w-full max-w-md mx-4">
+        <div
+            class="bg-surface/80 backdrop-blur-xl rounded-2xl border border-primary-border p-8 shadow-2xl shadow-black/30">
+            <a href="../index.html" class="flex items-center justify-center gap-2 mb-8">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/20">
+                    <i data-lucide="wallet" class="w-5 h-5 text-primary"></i>
+                </div>
+                <span class="text-2xl font-heading font-bold">Spend<span class="text-accent-cyan">Sense</span></span>
+            </a>
+
+            <h1 class="text-xl font-heading font-semibold text-center mb-1">Welcome Back</h1>
+            <p class="text-sm text-muted text-center mb-8">Log in to your account to continue tracking</p>
+
+            <!-- Error display -->
+            <div id="error-msg"
+                class="hidden mb-4 p-3 rounded-xl bg-danger/10 border border-danger/20 text-sm text-danger"></div>
+
+            <form id="login-form" class="space-y-5">
+                <div class="auth-field">
+                    <label for="email" class="block text-sm font-medium mb-1.5 text-gray-300">Email</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="email" id="email" name="email" required autocomplete="email"
+                            class="input-field pl-10" placeholder="you@example.com" />
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="password" class="block text-sm font-medium mb-1.5 text-gray-300">Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+                        <input type="password" id="password" name="password" required autocomplete="current-password"
+                            class="input-field pl-10 pr-10" placeholder="••••••••" />
+                        <button type="button" id="toggle-password"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-white transition"
+                            aria-label="Toggle password visibility">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="login-btn" class="btn-primary w-full py-3 text-base">
+                    <span id="login-text">Log In</span>
+                    <svg id="login-spinner" class="hidden animate-spin ml-2 w-5 h-5" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+                            fill="none"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+                        </path>
+                    </svg>
+                </button>
+            </form>
+
+            <p class="text-sm text-center text-muted mt-6">
+                Don't have an account? <a href="register.html" class="text-accent-cyan font-medium hover:underline">Sign
+                    up free</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/appwrite.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+            // If already logged in, redirect
+            (async () => {
+                if (await Auth.isLoggedIn()) window.location.href = 'dashboard.html';
+            })();
+
+        // Toggle password visibility
+        document.getElementById('toggle-password')?.addEventListener('click', function () {
+            const pwd = document.getElementById('password');
+            const isHidden = pwd.type === 'password';
+            pwd.type = isHidden ? 'text' : 'password';
+            this.querySelector('i').setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+            lucide.createIcons();
+        });
+
+        // Login form
+        document.getElementById('login-form')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.getElementById('login-btn');
+            const text = document.getElementById('login-text');
+            const spinner = document.getElementById('login-spinner');
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            errorMsg.classList.add('hidden');
+            btn.disabled = true;
+            text.textContent = 'Logging in...';
+            spinner.classList.remove('hidden');
+
+            try {
+                await Auth.login(email, password);
+                Toast.success('Welcome back!');
+                setTimeout(() => window.location.href = 'dashboard.html', 500);
+            } catch (err) {
+                errorMsg.textContent = err.message || 'Invalid email or password';
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                text.textContent = 'Log In';
+                spinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

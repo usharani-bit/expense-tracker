@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+.env
+*.pyc
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+Desktop.ini
+*.swp
+*.swo
+
+# Agent config (not needed in production)
+.agent/
+test.html

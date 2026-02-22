@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budgets — SpendSense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' }, accent: { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' }, success: '#10b981', danger: '#ef4444', muted: '#9ca3af', surface: '#111827' }, fontFamily: { heading: ['"Space Grotesk"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+
+<body class="bg-primary text-gray-100 font-body antialiased">
+    <div class="dashboard-layout">
+        <aside id="sidebar" class="sidebar">
+            <div class="p-5 border-b border-primary-border"><a href="../index.html" class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+                        <i data-lucide="wallet" class="w-4 h-4 text-primary"></i>
+                    </div><span class="text-lg font-heading font-bold">Spend<span
+                            class="text-accent-cyan">Sense</span></span>
+                </a></div>
+            <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+                <p class="px-5 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Main</p>
+                <a href="dashboard.html" class="sidebar-link"><i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    Dashboard</a>
+                <a href="expenses.html" class="sidebar-link"><i data-lucide="receipt" class="w-5 h-5"></i> Expenses</a>
+                <a href="budgets.html" class="sidebar-link active"><i data-lucide="target" class="w-5 h-5"></i>
+                    Budgets</a>
+                <a href="analytics.html" class="sidebar-link"><i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    Analytics</a>
+                <p class="px-5 pt-6 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
+                <a href="settings.html" class="sidebar-link"><i data-lucide="settings" class="w-5 h-5"></i> Settings</a>
+            </nav>
+            <div class="p-4 border-t border-primary-border"><button onclick="Auth.logout()"
+                    class="sidebar-link w-full text-danger"><i data-lucide="log-out" class="w-5 h-5"></i> Log
+                    Out</button></div>
+        </aside>
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <div class="main-content">
+            <header class="topbar">
+                <div class="flex items-center gap-4">
+                    <button id="sidebar-toggle" class="lg:hidden p-2 text-gray-400 hover:text-white"><i
+                            data-lucide="menu" class="w-5 h-5"></i></button>
+                    <div>
+                        <h1 class="text-lg font-heading font-semibold">Budgets</h1>
+                        <p class="text-xs text-muted">Set limits, stay on track</p>
+                    </div>
+                </div>
+                <button onclick="openBudgetModal()" class="btn-primary py-2 px-4 text-sm"><i data-lucide="plus"
+                        class="w-4 h-4 mr-1.5"></i> New Budget</button>
+            </header>
+
+            <main class="p-4 sm:p-6 lg:p-8 page-content pb-24 lg:pb-8">
+                <!-- Overview -->
+                <div class="card mb-8 p-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <h2 class="font-heading text-xl font-bold">Monthly Overview</h2>
+                            <p class="text-sm text-muted" id="budget-month-label">Loading...</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-muted">Total Budget</p>
+                            <p class="text-2xl font-heading font-bold" id="total-budget">₹0</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar h-4 mb-2">
+                        <div class="progress-bar-fill bg-gradient-to-r from-accent-cyan to-accent-purple"
+                            style="width:0%" id="overall-progress"></div>
+                    </div>
+                    <div class="flex justify-between text-sm"><span class="text-muted" id="overall-spent">₹0
+                            spent</span><span class="font-medium text-success" id="overall-remaining">₹0
+                            remaining</span></div>
+                </div>
+
+                <!-- Budget Cards -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="budget-cards">
+                    <div class="card text-center py-8">
+                        <p class="text-muted">Loading budgets...</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="bottom-nav-link"><i data-lucide="layout-dashboard"
+                    class="w-5 h-5"></i><span>Home</span></a>
+            <a href="expenses.html" class="bottom-nav-link"><i data-lucide="receipt"
+                    class="w-5 h-5"></i><span>Expenses</span></a>
+            <button onclick="openBudgetModal()" class="bottom-nav-link">
+                <div
+                    class="w-12 h-12 -mt-6 rounded-full bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/30">
+                    <i data-lucide="plus" class="w-6 h-6 text-primary"></i>
+                </div>
+            </button>
+            <a href="analytics.html" class="bottom-nav-link"><i data-lucide="bar-chart-3"
+                    class="w-5 h-5"></i><span>Analytics</span></a>
+            <a href="settings.html" class="bottom-nav-link"><i data-lucide="settings"
+                    class="w-5 h-5"></i><span>Settings</span></a>
+        </nav>
+    </div>
+
+    <!-- Add Budget Modal -->
+    <div id="budget-modal" class="modal-overlay">
+        <div class="bg-surface rounded-2xl border border-primary-border w-full max-w-lg mx-4 p-6 shadow-2xl"
+            id="budget-modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="font-heading text-lg font-semibold">New Budget</h2><button onclick="closeBudgetModal()"
+                    class="p-2 text-gray-400 hover:text-white transition"><i data-lucide="x"
+                        class="w-5 h-5"></i></button>
+            </div>
+            <form id="budget-form" class="space-y-4">
+                <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Category</label>
+                    <select id="bud-category" required class="input-field">
+                        <option value="">Select</option>
+                        <option value="food">🍕 Food & Dining</option>
+                        <option value="transport">🚗 Transport</option>
+                        <option value="housing">🏠 Housing</option>
+                        <option value="health">💊 Health</option>
+                        <option value="entertainment">🎬 Entertainment</option>
+                        <option value="shopping">🛍️ Shopping</option>
+                        <option value="utilities">⚡ Utilities</option>
+                        <option value="education">📚 Education</option>
+                        <option value="other">📌 Other</option>
+                    </select>
+                </div>
+                <div><label class="block text-sm font-medium mb-1.5 text-gray-300">Monthly Limit</label>
+                    <div class="relative"><span
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">₹</span><input type="number"
+                            id="bud-limit" required step="1" min="1" class="input-field pl-7 font-mono"
+                            placeholder="500" /></div>
+                </div>
+                <div class="flex gap-3 pt-2"><button type="button" onclick="closeBudgetModal()"
+                        class="btn-secondary flex-1">Cancel</button><button type="submit" id="save-budget-btn"
+                        class="btn-primary flex-1">Save Budget</button></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/appwrite.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+        const currentMonth = Utils.getCurrentMonth();
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const now = new Date();
+        document.getElementById('budget-month-label').textContent = `${monthNames[now.getMonth()]} ${now.getFullYear()} — Day ${now.getDate()} of ${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()}`;
+
+        async function loadBudgets() {
+            const user = await Auth.requireAuth();
+            if (!user) return;
+
+            try {
+                const [budgets, catTotals] = await Promise.all([
+                    BudgetService.list(currentMonth),
+                    ExpenseService.getCategoryTotals(currentMonth),
+                ]);
+
+                let totalBudget = 0, totalSpent = 0;
+                const cards = budgets.documents.map(b => {
+                    const spent = catTotals[b.category] || 0;
+                    const limit = b.limitAmount;
+                    totalBudget += limit;
+                    totalSpent += spent;
+                    const pct = limit > 0 ? Math.min(Math.round(spent / limit * 100), 100) : 0;
+                    const isOver = spent > limit;
+                    const color = isOver ? '#ef4444' : pct >= 80 ? '#f59e0b' : Utils.getCategoryColor(b.category);
+                    const icon = Utils.getCategoryIcon(b.category);
+
+                    return `<div class="card group ${isOver ? 'border-danger/30' : ''}">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:${color}15"><i data-lucide="${icon}" class="w-5 h-5" style="color:${color}"></i></div>
+              <div><h3 class="font-medium">${Utils.getCategoryLabel(b.category)}</h3><p class="text-xs ${isOver ? 'text-danger font-medium' : 'text-muted'}">${isOver ? 'Over budget!' : 'Monthly'}</p></div>
+            </div>
+            <button onclick="deleteBudget('${b.$id}')" class="p-1.5 text-muted hover:text-danger opacity-0 group-hover:opacity-100 transition" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </div>
+          <div class="flex items-end justify-between mb-2"><span class="text-2xl font-heading font-bold font-mono ${isOver ? 'text-danger' : ''}">${Utils.formatCurrency(spent)}</span><span class="text-sm text-muted">/ ${Utils.formatCurrency(limit)}</span></div>
+          <div class="progress-bar mb-2"><div class="progress-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+          <div class="flex justify-between text-xs">
+            <span style="color:${color}" class="font-medium">${isOver ? '🚨 Over by ' + Utils.formatCurrency(spent - limit) : pct + '% used'}</span>
+            ${!isOver ? `<span class="text-muted">${Utils.formatCurrency(limit - spent)} left</span>` : ''}
+          </div>
+        </div>`;
+                });
+
+                // Add "new budget" card
+                cards.push(`<button onclick="openBudgetModal()" class="card flex flex-col items-center justify-center gap-3 min-h-[200px] border-dashed border-2 border-primary-border hover:border-accent-cyan/30 transition-colors cursor-pointer group">
+        <div class="w-14 h-14 rounded-2xl bg-accent-cyan/5 flex items-center justify-center group-hover:bg-accent-cyan/10 transition"><i data-lucide="plus" class="w-7 h-7 text-accent-cyan"></i></div>
+        <p class="text-sm font-medium text-muted group-hover:text-white transition">Add New Budget</p>
+      </button>`);
+
+                document.getElementById('budget-cards').innerHTML = cards.join('');
+
+                // Overview
+                document.getElementById('total-budget').textContent = Utils.formatCurrency(totalBudget);
+                document.getElementById('overall-spent').textContent = Utils.formatCurrency(totalSpent) + ' spent';
+                const remaining = totalBudget - totalSpent;
+                document.getElementById('overall-remaining').textContent = (remaining >= 0 ? Utils.formatCurrency(remaining) + ' remaining' : Utils.formatCurrency(Math.abs(remaining)) + ' over');
+                document.getElementById('overall-remaining').className = remaining >= 0 ? 'font-medium text-success' : 'font-medium text-danger';
+                document.getElementById('overall-progress').style.width = totalBudget > 0 ? Math.min(Math.round(totalSpent / totalBudget * 100), 100) + '%' : '0%';
+
+                lucide.createIcons();
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    gsap.from('.card', { opacity: 0, y: 30, stagger: 0.08, duration: 0.6, ease: 'power2.out', delay: 0.2 });
+                }
+            } catch (err) { Toast.error('Failed to load budgets'); console.error(err); }
+        }
+
+        async function deleteBudget(id) {
+            if (!confirm('Delete this budget?')) return;
+            try { await BudgetService.delete(id); Toast.success('Budget deleted'); loadBudgets(); } catch (e) { Toast.error('Failed to delete'); }
+        }
+
+        function openBudgetModal() { document.getElementById('budget-modal').classList.add('active'); gsap.fromTo(document.getElementById('budget-modal-content'), { scale: .95, opacity: 0 }, { scale: 1, opacity: 1, duration: .3, ease: 'power2.out' }); }
+        function closeBudgetModal() { gsap.to(document.getElementById('budget-modal-content'), { scale: .95, opacity: 0, duration: .2, ease: 'power2.in', onComplete: () => document.getElementById('budget-modal').classList.remove('active') }); }
+        document.getElementById('budget-modal').addEventListener('click', function (e) { if (e.target === this) closeBudgetModal(); });
+
+        document.getElementById('budget-form')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-budget-btn');
+            btn.disabled = true; btn.textContent = 'Saving...';
+            try {
+                await BudgetService.create({
+                    category: document.getElementById('bud-category').value,
+                    limitAmount: parseFloat(document.getElementById('bud-limit').value),
+                    month: currentMonth,
+                });
+                Toast.success('Budget created!');
+                closeBudgetModal(); this.reset(); loadBudgets();
+            } catch (err) { Toast.error(err.message); }
+            btn.disabled = false; btn.textContent = 'Save Budget';
+        });
+
+        loadBudgets();
+    </script>
+</body>
+
+</html>

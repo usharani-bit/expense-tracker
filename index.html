@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SpendSense — Smart Personal Expense Tracker</title>
-  <meta name="description" content="A secure, intelligent, data-driven platform to monitor, analyze, and optimize your daily financial activities." />
+  <meta name="description"
+    content="A secure, intelligent, data-driven platform to monitor, analyze, and optimize your daily financial activities." />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,17 +15,17 @@
       theme: {
         extend: {
           colors: {
-            primary:   { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' },
-            accent:    { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' },
-            success:   '#10b981',
-            danger:    '#ef4444',
-            muted:     '#9ca3af',
-            surface:   '#111827',
+            primary: { DEFAULT: '#0a0f1e', light: '#111827', border: '#1f2937' },
+            accent: { cyan: '#22d3ee', purple: '#a78bfa', gold: '#f59e0b' },
+            success: '#10b981',
+            danger: '#ef4444',
+            muted: '#9ca3af',
+            surface: '#111827',
           },
           fontFamily: {
             heading: ['"Space Grotesk"', 'sans-serif'],
-            body:    ['"IBM Plex Sans"', 'sans-serif'],
-            mono:    ['"JetBrains Mono"', 'monospace'],
+            body: ['"IBM Plex Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
           },
         }
       }
@@ -33,7 +35,9 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet" />
 
   <!-- GSAP -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
@@ -44,6 +48,7 @@
 
   <link rel="stylesheet" href="css/global.css" />
 </head>
+
 <body class="bg-primary text-gray-100 font-body antialiased overflow-x-hidden">
 
   <!-- ═══════════════════ NAVBAR ═══════════════════ -->
@@ -52,10 +57,12 @@
       <div class="flex items-center justify-between h-16 lg:h-20">
         <!-- Logo -->
         <a href="index.html" class="flex items-center gap-2 group">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/20 group-hover:shadow-accent-cyan/40 transition-shadow">
+          <div
+            class="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-accent-cyan/20 group-hover:shadow-accent-cyan/40 transition-shadow">
             <i data-lucide="wallet" class="w-5 h-5 text-primary"></i>
           </div>
-          <span class="text-xl font-heading font-bold tracking-tight">Spend<span class="text-accent-cyan">Sense</span></span>
+          <span class="text-xl font-heading font-bold tracking-tight">Spend<span
+              class="text-accent-cyan">Sense</span></span>
         </a>
 
         <!-- Desktop Nav -->
@@ -67,7 +74,8 @@
 
         <!-- CTA Buttons -->
         <div class="hidden md:flex items-center gap-3">
-          <a href="pages/login.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">Log In</a>
+          <a href="pages/login.html"
+            class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">Log In</a>
           <a href="pages/register.html" class="btn-primary">Get Started Free</a>
         </div>
 
@@ -81,9 +89,12 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden hidden bg-primary-light/95 backdrop-blur-xl border-t border-primary-border">
       <div class="px-4 py-4 space-y-2">
-        <a href="#features" class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition">Features</a>
-        <a href="#how-it-works" class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition">How It Works</a>
-        <a href="#pricing" class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition">Pricing</a>
+        <a href="#features"
+          class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition">Features</a>
+        <a href="#how-it-works"
+          class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition">How It Works</a>
+        <a href="#pricing"
+          class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition">Pricing</a>
         <hr class="border-primary-border" />
         <a href="pages/login.html" class="block px-4 py-3 rounded-lg text-gray-300 hover:text-white">Log In</a>
         <a href="pages/register.html" class="block w-full text-center btn-primary">Get Started Free</a>
@@ -96,26 +107,33 @@
     <!-- Background Effects -->
     <div class="absolute inset-0 z-0">
       <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-cyan/10 rounded-full blur-3xl animate-pulse-slow"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-purple/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s"></div>
-      <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA2MCAwIEwgMCAwIDAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-purple/10 rounded-full blur-3xl animate-pulse-slow"
+        style="animation-delay: 1s"></div>
+      <div
+        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA2MCAwIEwgMCAwIDAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40">
+      </div>
     </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-0">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <!-- Left Content -->
         <div class="text-center lg:text-left">
-          <div class="hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-cyan/10 border border-accent-cyan/20 text-accent-cyan text-sm font-medium mb-6">
+          <div
+            class="hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-cyan/10 border border-accent-cyan/20 text-accent-cyan text-sm font-medium mb-6">
             <span class="w-2 h-2 rounded-full bg-accent-cyan animate-pulse"></span>
             Smart Finance Tracking
           </div>
 
           <h1 class="hero-title font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6">
-            Master Your <br/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-gold">Money Flow</span>
+            Master Your <br />
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-gold">Money
+              Flow</span>
           </h1>
 
           <p class="hero-subtitle text-lg sm:text-xl text-muted max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
-            A secure, intelligent platform that helps you monitor, analyze, and optimize your daily financial activities — for smarter decisions.
+            A secure, intelligent platform that helps you monitor, analyze, and optimize your daily financial activities
+            — for smarter decisions.
           </p>
 
           <div class="hero-ctas flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -149,14 +167,17 @@
 
         <!-- Right — Dashboard Preview Card -->
         <div class="hero-visual relative">
-          <div class="relative bg-surface/80 backdrop-blur-xl rounded-2xl border border-primary-border p-6 shadow-2xl shadow-black/40">
+          <div
+            class="relative bg-surface/80 backdrop-blur-xl rounded-2xl border border-primary-border p-6 shadow-2xl shadow-black/40">
             <!-- Mock Top Bar -->
             <div class="flex items-center justify-between mb-6">
               <div>
                 <p class="text-sm text-muted">Total Balance</p>
-                <p class="text-3xl font-heading font-bold text-white">$14,280<span class="text-lg text-accent-cyan">.50</span></p>
+                <p class="text-3xl font-heading font-bold text-white">₹14,280<span
+                    class="text-lg text-accent-cyan">.50</span></p>
               </div>
-              <div class="flex items-center gap-1 px-3 py-1 rounded-full bg-success/10 text-success text-sm font-medium">
+              <div
+                class="flex items-center gap-1 px-3 py-1 rounded-full bg-success/10 text-success text-sm font-medium">
                 <i data-lucide="trending-up" class="w-4 h-4"></i>
                 +12.5%
               </div>
@@ -166,19 +187,22 @@
             <svg class="w-full h-32 mb-6" viewBox="0 0 400 100" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:0.3"/>
-                  <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0"/>
+                  <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:0.3" />
+                  <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0" />
                 </linearGradient>
               </defs>
-              <path id="chart-area" d="M0,80 Q50,70 100,55 T200,35 T300,45 T400,20 L400,100 L0,100 Z" fill="url(#chartGradient)"/>
-              <path id="chart-line" d="M0,80 Q50,70 100,55 T200,35 T300,45 T400,20" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/>
+              <path id="chart-area" d="M0,80 Q50,70 100,55 T200,35 T300,45 T400,20 L400,100 L0,100 Z"
+                fill="url(#chartGradient)" />
+              <path id="chart-line" d="M0,80 Q50,70 100,55 T200,35 T300,45 T400,20" fill="none" stroke="#22d3ee"
+                stroke-width="2.5" stroke-linecap="round" />
             </svg>
 
             <!-- Mini Expense List -->
             <div class="space-y-3">
               <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-danger/10 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-5 h-5 text-danger"></i></div>
+                  <div class="w-10 h-10 rounded-xl bg-danger/10 flex items-center justify-center"><i
+                      data-lucide="shopping-cart" class="w-5 h-5 text-danger"></i></div>
                   <div>
                     <p class="text-sm font-medium">Groceries</p>
                     <p class="text-xs text-muted">Today, 2:30 PM</p>
@@ -188,7 +212,8 @@
               </div>
               <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center"><i data-lucide="briefcase" class="w-5 h-5 text-success"></i></div>
+                  <div class="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center"><i
+                      data-lucide="briefcase" class="w-5 h-5 text-success"></i></div>
                   <div>
                     <p class="text-sm font-medium">Salary Deposit</p>
                     <p class="text-xs text-muted">Feb 20, 9:00 AM</p>
@@ -198,7 +223,8 @@
               </div>
               <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-accent-purple/10 flex items-center justify-center"><i data-lucide="film" class="w-5 h-5 text-accent-purple"></i></div>
+                  <div class="w-10 h-10 rounded-xl bg-accent-purple/10 flex items-center justify-center"><i
+                      data-lucide="film" class="w-5 h-5 text-accent-purple"></i></div>
                   <div>
                     <p class="text-sm font-medium">Netflix</p>
                     <p class="text-xs text-muted">Feb 19, Auto</p>
@@ -209,7 +235,9 @@
             </div>
           </div>
           <!-- Glow Effect -->
-          <div class="absolute -inset-4 bg-gradient-to-br from-accent-cyan/5 via-transparent to-accent-purple/5 rounded-3xl -z-10 blur-2xl"></div>
+          <div
+            class="absolute -inset-4 bg-gradient-to-br from-accent-cyan/5 via-transparent to-accent-purple/5 rounded-3xl -z-10 blur-2xl">
+          </div>
         </div>
       </div>
     </div>
@@ -220,183 +248,169 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 lg:mb-20">
         <p class="text-accent-cyan text-sm font-medium uppercase tracking-widest mb-3">Why SpendSense</p>
-        <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Everything You Need to <br class="hidden sm:block"/><span class="text-accent-cyan">Take Control</span></h2>
-        <p class="text-muted text-lg max-w-2xl mx-auto">Powerful features designed to give you complete visibility over your finances — without the complexity.</p>
+        <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Everything You Need to <br
+            class="hidden sm:block" /><span class="text-accent-cyan">Take Control</span></h2>
+        <p class="text-muted text-lg max-w-2xl mx-auto">Powerful features designed to give you complete visibility over
+          your finances — without the complexity.</p>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        <!-- Feature 1 -->
-        <div class="feature-card group p-8 rounded-2xl bg-surface/50 border border-primary-border hover:border-accent-cyan/30 transition-all duration-300 hover:shadow-lg hover:shadow-accent-cyan/5">
-          <div class="w-14 h-14 rounded-2xl bg-accent-cyan/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <i data-lucide="shield-check" class="w-7 h-7 text-accent-cyan"></i>
+      <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+      <section id="how-it-works" class="py-24 lg:py-32 bg-surface/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16 lg:mb-20">
+            <p class="text-accent-purple text-sm font-medium uppercase tracking-widest mb-3">Simple Setup</p>
+            <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Up and Running in <span
+                class="text-accent-purple">3 Steps</span></h2>
+            <p class="text-muted text-lg max-w-2xl mx-auto">No complicated setup. Start tracking your expenses in under
+              2 minutes.</p>
           </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Bank-Grade Security</h3>
-          <p class="text-muted leading-relaxed">End-to-end encryption, JWT authentication, and secure data storage. Your financial data is always protected.</p>
-        </div>
 
-        <!-- Feature 2 -->
-        <div class="feature-card group p-8 rounded-2xl bg-surface/50 border border-primary-border hover:border-accent-purple/30 transition-all duration-300 hover:shadow-lg hover:shadow-accent-purple/5">
-          <div class="w-14 h-14 rounded-2xl bg-accent-purple/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <i data-lucide="brain" class="w-7 h-7 text-accent-purple"></i>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">AI-Powered Insights</h3>
-          <p class="text-muted leading-relaxed">Smart categorization, spending pattern detection, and personalized recommendations to optimize your budget.</p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="feature-card group p-8 rounded-2xl bg-surface/50 border border-primary-border hover:border-accent-gold/30 transition-all duration-300 hover:shadow-lg hover:shadow-accent-gold/5">
-          <div class="w-14 h-14 rounded-2xl bg-accent-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <i data-lucide="bar-chart-3" class="w-7 h-7 text-accent-gold"></i>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Rich Analytics</h3>
-          <p class="text-muted leading-relaxed">Interactive charts, trend analysis, category breakdowns, and forecasting — everything at a glance.</p>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="feature-card group p-8 rounded-2xl bg-surface/50 border border-primary-border hover:border-success/30 transition-all duration-300 hover:shadow-lg hover:shadow-success/5">
-          <div class="w-14 h-14 rounded-2xl bg-success/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <i data-lucide="target" class="w-7 h-7 text-success"></i>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Budget Goals</h3>
-          <p class="text-muted leading-relaxed">Set budgets per category, get real-time alerts when you're approaching limits, and stay on track.</p>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="feature-card group p-8 rounded-2xl bg-surface/50 border border-primary-border hover:border-danger/30 transition-all duration-300 hover:shadow-lg hover:shadow-danger/5">
-          <div class="w-14 h-14 rounded-2xl bg-danger/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <i data-lucide="repeat" class="w-7 h-7 text-danger"></i>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Recurring Tracking</h3>
-          <p class="text-muted leading-relaxed">Automatically track subscriptions, rent, bills, and recurring expenses — never miss a payment.</p>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="feature-card group p-8 rounded-2xl bg-surface/50 border border-primary-border hover:border-accent-cyan/30 transition-all duration-300 hover:shadow-lg hover:shadow-accent-cyan/5">
-          <div class="w-14 h-14 rounded-2xl bg-accent-cyan/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <i data-lucide="download" class="w-7 h-7 text-accent-cyan"></i>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Export & Reports</h3>
-          <p class="text-muted leading-relaxed">Download your data as CSV or PDF. Generate monthly and yearly financial reports with one click.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
-  <section id="how-it-works" class="py-24 lg:py-32 bg-surface/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 lg:mb-20">
-        <p class="text-accent-purple text-sm font-medium uppercase tracking-widest mb-3">Simple Setup</p>
-        <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Up and Running in <span class="text-accent-purple">3 Steps</span></h2>
-        <p class="text-muted text-lg max-w-2xl mx-auto">No complicated setup. Start tracking your expenses in under 2 minutes.</p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
-        <div class="step-card text-center relative">
-          <div class="w-16 h-16 rounded-2xl bg-accent-cyan/10 border border-accent-cyan/20 flex items-center justify-center mx-auto mb-6">
-            <span class="font-heading text-2xl font-bold text-accent-cyan">1</span>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Create Account</h3>
-          <p class="text-muted">Sign up with email or Google in seconds. No credit card required.</p>
-          <!-- Connector line (hidden on mobile) -->
-          <div class="hidden md:block absolute top-8 left-[60%] w-[80%] h-px bg-gradient-to-r from-accent-cyan/40 to-transparent"></div>
-        </div>
-
-        <div class="step-card text-center relative">
-          <div class="w-16 h-16 rounded-2xl bg-accent-purple/10 border border-accent-purple/20 flex items-center justify-center mx-auto mb-6">
-            <span class="font-heading text-2xl font-bold text-accent-purple">2</span>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Add Expenses</h3>
-          <p class="text-muted">Log expenses manually or import from CSV. Smart auto-categorization does the rest.</p>
-          <div class="hidden md:block absolute top-8 left-[60%] w-[80%] h-px bg-gradient-to-r from-accent-purple/40 to-transparent"></div>
-        </div>
-
-        <div class="step-card text-center">
-          <div class="w-16 h-16 rounded-2xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center mx-auto mb-6">
-            <span class="font-heading text-2xl font-bold text-accent-gold">3</span>
-          </div>
-          <h3 class="font-heading text-xl font-semibold mb-3">Get Insights</h3>
-          <p class="text-muted">View your dashboard, get alerts, and optimize your spending with AI-powered insights.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ CTA ═══════════════════ -->
-  <section id="cta" class="py-24 lg:py-32 relative">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div class="cta-card relative p-12 lg:p-16 rounded-3xl bg-gradient-to-br from-surface via-surface to-primary-light border border-primary-border overflow-hidden">
-        <!-- Glowing orbs -->
-        <div class="absolute top-0 right-0 w-64 h-64 bg-accent-cyan/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-accent-purple/10 rounded-full blur-3xl"></div>
-
-        <div class="relative z-10">
-          <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Ready to Take Control of <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-purple">Your Finances?</span></h2>
-          <p class="text-muted text-lg mb-10 max-w-lg mx-auto">Join thousands of users who have transformed their financial habits with SpendSense.</p>
-          <a href="pages/register.html" class="btn-primary text-lg px-10 py-4 shadow-xl shadow-accent-cyan/20">
-            Get Started — It's Free
-            <i data-lucide="arrow-right" class="w-5 h-5 ml-2 inline-block"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ FOOTER ═══════════════════ -->
-  <footer class="py-12 border-t border-primary-border bg-primary">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-        <!-- Brand -->
-        <div>
-          <a href="index.html" class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
-              <i data-lucide="wallet" class="w-4 h-4 text-primary"></i>
+          <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+            <div class="step-card text-center relative">
+              <div
+                class="w-16 h-16 rounded-2xl bg-accent-cyan/10 border border-accent-cyan/20 flex items-center justify-center mx-auto mb-6">
+                <span class="font-heading text-2xl font-bold text-accent-cyan">1</span>
+              </div>
+              <h3 class="font-heading text-xl font-semibold mb-3">Create Account</h3>
+              <p class="text-muted">Sign up with email or Google in seconds. No credit card required.</p>
+              <!-- Connector line (hidden on mobile) -->
+              <div
+                class="hidden md:block absolute top-8 left-[60%] w-[80%] h-px bg-gradient-to-r from-accent-cyan/40 to-transparent">
+              </div>
             </div>
-            <span class="text-lg font-heading font-bold">Spend<span class="text-accent-cyan">Sense</span></span>
-          </a>
-          <p class="text-muted text-sm leading-relaxed">Smart, secure, and data-driven expense tracking for everyone.</p>
-        </div>
-        <!-- Product -->
-        <div>
-          <h4 class="font-heading font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Product</h4>
-          <ul class="space-y-2 text-sm text-muted">
-            <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
-            <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
-            <li><a href="pages/dashboard.html" class="hover:text-white transition-colors">Dashboard</a></li>
-          </ul>
-        </div>
-        <!-- Company -->
-        <div>
-          <h4 class="font-heading font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Company</h4>
-          <ul class="space-y-2 text-sm text-muted">
-            <li><a href="#" class="hover:text-white transition-colors">About</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
-          </ul>
-        </div>
-        <!-- Legal -->
-        <div>
-          <h4 class="font-heading font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Legal</h4>
-          <ul class="space-y-2 text-sm text-muted">
-            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-primary-border text-sm text-muted">
-        <p>&copy; 2026 SpendSense. All rights reserved.</p>
-        <div class="flex items-center gap-4 mt-4 sm:mt-0">
-          <a href="#" class="hover:text-accent-cyan transition-colors" aria-label="Twitter"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-          <a href="#" class="hover:text-accent-cyan transition-colors" aria-label="GitHub"><i data-lucide="github" class="w-5 h-5"></i></a>
-          <a href="#" class="hover:text-accent-cyan transition-colors" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
-  <!-- Scripts -->
-  <script src="js/animations.js"></script>
-  <script src="js/app.js"></script>
+            <div class="step-card text-center relative">
+              <div
+                class="w-16 h-16 rounded-2xl bg-accent-purple/10 border border-accent-purple/20 flex items-center justify-center mx-auto mb-6">
+                <span class="font-heading text-2xl font-bold text-accent-purple">2</span>
+              </div>
+              <h3 class="font-heading text-xl font-semibold mb-3">Add Expenses</h3>
+              <p class="text-muted">Log expenses manually or import from CSV. Smart auto-categorization does the rest.
+              </p>
+              <div
+                class="hidden md:block absolute top-8 left-[60%] w-[80%] h-px bg-gradient-to-r from-accent-purple/40 to-transparent">
+              </div>
+            </div>
+
+            <div class="step-card text-center">
+              <div
+                class="w-16 h-16 rounded-2xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center mx-auto mb-6">
+                <span class="font-heading text-2xl font-bold text-accent-gold">3</span>
+              </div>
+              <h3 class="font-heading text-xl font-semibold mb-3">Get Insights</h3>
+              <p class="text-muted">View your dashboard, get alerts, and optimize your spending with AI-powered
+                insights.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ CTA ═══════════════════ -->
+      <section id="cta" class="py-24 lg:py-32 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div
+            class="cta-card relative p-12 lg:p-16 rounded-3xl bg-gradient-to-br from-surface via-surface to-primary-light border border-primary-border overflow-hidden">
+            <!-- Glowing orbs -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-accent-cyan/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-accent-purple/10 rounded-full blur-3xl"></div>
+
+            <div class="relative z-10">
+              <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Ready to Take Control of
+                <br /><span
+                  class="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-purple">Your
+                  Finances?</span>
+              </h2>
+              <p class="text-muted text-lg mb-10 max-w-lg mx-auto">Join thousands of users who have transformed their
+                financial habits with SpendSense.</p>
+              <a href="pages/register.html" class="btn-primary text-lg px-10 py-4 shadow-xl shadow-accent-cyan/20">
+                Get Started — It's Free
+                <i data-lucide="arrow-right" class="w-5 h-5 ml-2 inline-block"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ FOOTER ═══════════════════ -->
+      <footer class="py-12 border-t border-primary-border bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <!-- Brand -->
+            <div>
+              <a href="index.html" class="flex items-center gap-2 mb-4">
+                <div
+                  class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+                  <i data-lucide="wallet" class="w-4 h-4 text-primary"></i>
+                </div>
+                <span class="text-lg font-heading font-bold">Spend<span class="text-accent-cyan">Sense</span></span>
+              </a>
+              <p class="text-muted text-sm leading-relaxed">Smart, secure, and data-driven expense tracking for
+                everyone.</p>
+            </div>
+            <!-- Product -->
+            <div>
+              <h4 class="font-heading font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Product</h4>
+              <ul class="space-y-2 text-sm text-muted">
+                <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="pages/dashboard.html" class="hover:text-white transition-colors">Dashboard</a></li>
+              </ul>
+            </div>
+            <!-- Company -->
+            <div>
+              <h4 class="font-heading font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Company</h4>
+              <ul class="space-y-2 text-sm text-muted">
+                <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+              </ul>
+            </div>
+            <!-- Legal -->
+            <div>
+              <h4 class="font-heading font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Legal</h4>
+              <ul class="space-y-2 text-sm text-muted">
+                <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="flex flex-col items-center gap-3 pt-8 border-t border-primary-border text-sm text-muted sm:flex-row sm:justify-between">
+            <!-- Left: copyright + developer -->
+            <div class="flex flex-col items-center gap-1.5 sm:flex-row sm:items-center sm:gap-0">
+              <span class="text-center">&copy; 2026 SpendSense. All rights reserved.</span>
+              <span class="hidden sm:inline mx-2 opacity-40">|</span>
+              <span class="flex items-center gap-1.5">
+                <span>Developed by</span>
+                <a href="https://www.linkedin.com/in/usha-rani-a6b7aa2a5" target="_blank" rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 group font-medium text-accent-cyan hover:text-accent-purple transition-colors duration-200"
+                  title="Connect with Usha Rani on LinkedIn">
+                  <img src="images/usha-rani.png" alt="Usha Rani"
+                    class="w-6 h-6 rounded-full object-cover border-2 border-accent-cyan/50 group-hover:border-accent-purple/70 transition-all duration-200 shadow-md"
+                    onerror="this.style.display='none'" />
+                  <span>Usha Rani</span>
+                </a>
+              </span>
+            </div>
+            <!-- Right: social icons -->
+            <div class="flex items-center gap-4">
+              <a href="https://github.com/usharani-bit" class="hover:text-accent-cyan transition-colors"
+                aria-label="GitHub">
+                <i data-lucide="github" class="w-5 h-5"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/usha-rani-a6b7aa2a5" class="hover:text-accent-cyan transition-colors"
+                aria-label="LinkedIn">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Scripts -->
+      <script src="js/animations.js"></script>
+      <script src="js/app.js"></script>
 </body>
+
 </html>
